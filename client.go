@@ -148,18 +148,23 @@ func (c *Client) CreateRecord(tableName string, record interface{}) error {
 }
 
 type updateBody struct {
-	Fields map[string]interface{} `json:"fields"`
+	Fields   map[string]interface{} `json:"fields"`
+	Typecast bool                   `json:"typecast"`
 }
 
 // UpdateRecord updates an existing record in an Airtable table and updates the new field values in
 // the `record` struct passed in.
-func (c *Client) UpdateRecord(tableName, recordID string, updatedFields map[string]interface{}, record interface{}) error {
+//
+// Typecast is an optional parameter to automatically cast fields (create new single select fields and such)
+func (c *Client) UpdateRecord(tableName, recordID string, updatedFields map[string]interface{}, record interface{}, typecase bool) error {
 	if err := utils.CheckForValidRecordID(recordID); err != nil {
 		return err
 	}
 
 	endpoint := fmt.Sprintf("%s/%s/%s/%s", apiBaseURL, c.baseID, tableName, recordID)
-	body := updateBody{}
+	body := updateBody{
+		Typecast: typecast,
+	}
 	body.Fields = updatedFields
 	rawBody, err := c.request("PATCH", endpoint, body)
 	if err != nil {
