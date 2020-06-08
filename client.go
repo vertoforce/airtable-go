@@ -156,7 +156,7 @@ type updateBody struct {
 // the `record` struct passed in.
 //
 // Typecast is an optional parameter to automatically cast fields (create new single select fields and such)
-func (c *Client) UpdateRecord(tableName, recordID string, updatedFields map[string]interface{}, record interface{}, typecase bool) error {
+func (c *Client) UpdateRecord(tableName, recordID string, updatedFields map[string]interface{}, record interface{}, typecast bool) error {
 	if err := utils.CheckForValidRecordID(recordID); err != nil {
 		return err
 	}
